@@ -34,10 +34,10 @@ npm install
 cp .env.example .env
 
 # 3. Crear las tablas (UNA SOLA VEZ): en el SQL Editor del dashboard de
-#    Supabase pega y ejecuta, en orden, el contenido de:
-#    - prisma/migrations/20260916195700_init/migration.sql
-#    - prisma/migrations/20260916223000_add_ai_skill/migration.sql
-#    (si ya ejecutaste la primera, basta con la segunda).
+#    Supabase pega y ejecuta el contenido de prisma/full-setup.sql
+#    (incluye las 4 tablas: Client, Project, Prompt y AiSkill).
+#    Si la base de datos ya existe de antes, ejecuta solo los archivos
+#    nuevos de prisma/migrations/ en orden en lugar de este.
 
 # 4. Arrancar el servidor de desarrollo
 npm run dev
@@ -109,7 +109,8 @@ lib/
   auth-actions.ts     → Acciones de login/logout
   utils.ts            → Utilidades (fechas, etiquetas, estados)
 prisma/
-  schema.prisma       → Modelos: Client, Project, Prompt
+  schema.prisma       → Modelos: Client, Project, Prompt, AiSkill
+  full-setup.sql      → SQL completo para crear toda la base de datos de una vez
 public/
   logorojo.png        → Logo de Noxell Dev (como en noxell.dev)
 ```

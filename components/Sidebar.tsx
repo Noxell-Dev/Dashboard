@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { logout } from "@/lib/auth-actions";
 
 const LINKS = [
@@ -10,7 +11,7 @@ const LINKS = [
   { href: "/clientes", label: "Clientes", icon: "◉" },
   { href: "/proyectos", label: "Proyectos", icon: "▣" },
   { href: "/prompts", label: "Prompts", icon: "✎" },
-  { href: "/skills", label: "Skills IA", icon: "⚡" },
+  { href: "/skills", label: "Skills IA", icon: "⬢" },
 ];
 
 function Logo() {
@@ -35,7 +36,7 @@ function Logo() {
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   return (
-    <nav className="flex flex-wrap gap-1 md:flex-col md:flex-nowrap">
+    <nav className="flex flex-col gap-1">
       {LINKS.map((link) => {
         const active =
           link.href === "/"
@@ -46,6 +47,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
             key={link.href}
             href={link.href}
             onClick={onNavigate}
+            aria-current={active ? "page" : undefined}
             className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition ${
               active
                 ? "bg-red-600/15 text-red-300 ring-1 ring-red-500/30"
@@ -79,6 +81,48 @@ function LogoutButton() {
   );
 }
 
+function MobileHeader() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open ]);
+
+  return (
+    <header className="sticky top-0 z-40 border-b border-zinc-800/80 bg-zinc-950/95 backdrop-blur md:hidden">
+      <div className="flex items-center justify-between px-4 py-3">
+        <Logo />
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-controls="mobile-nav"
+          aria-label={open ? "Cerrar menú" : "Abrir menú"}
+          className="flex h-10 w-10 items-center justify-center rounded-xl text-xl text-zinc-200 ring-1 ring-zinc-800 transition hover:bg-zinc-800/60"
+        >
+          <span aria-hidden="true">{open ? "✕" : "☰"}</span>
+        </button>
+      </div>
+      {open && (
+        <div
+          id="mobile-nav"
+          className="border-t border-zinc-800/80 px-4 py-3"
+        >
+          <NavLinks onNavigate={() => setOpen(false)} />
+          <div className="mt-2 border-t border-zinc-800/60 pt-2">
+            <LogoutButton />
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
 export function Sidebar() {
   return (
     <>
@@ -93,14 +137,8 @@ export function Sidebar() {
         </div>
       </aside>
 
-      {/* Móvil: cabecera + navegación */}
-      <header className="sticky top-0 z-40 border-b border-zinc-800/80 bg-zinc-950/95 px-4 py-3 backdrop-blur md:hidden">
-        <div className="mb-2 flex items-center justify-between">
-          <Logo />
-          <LogoutButton />
-        </div>
-        <NavLinks />
-      </header>
+      {/* Móvil: cabecera con menú desplegable */}
+      <MobileHeader />
     </>
   );
 }
