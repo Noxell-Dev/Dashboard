@@ -1,7 +1,8 @@
 # noxell.dev · Panel del estudio
 
 Panel interno del estudio **noxell.dev** para gestionar clientes, proyectos
-realizados y una biblioteca de prompts reutilizables.
+realizados, una biblioteca de prompts reutilizables y un catálogo de
+skills de IA. Estética en rojo, el color de la identidad de Noxell Dev.
 
 ## Tecnologías
 
@@ -88,6 +89,7 @@ app/
   proyectos/page.tsx  → Gestión de proyectos (CRUD)
   prompts/page.tsx    → Biblioteca de prompts (búsqueda, filtros, copiar)
   skills/page.tsx     → Catálogo de skills de IA (búsqueda, filtros, copiar)
+  icon.svg            → Favicon vectorial (nudo rojo de noxell.dev)
   icon.png            → Favicon (nudo rojo de noxell.dev)
   apple-icon.png      → Icono Apple 180×180
   favicon.ico         → Favicon clásico
