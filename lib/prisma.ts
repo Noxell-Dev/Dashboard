@@ -9,14 +9,18 @@ function createPrismaClient(): PrismaClient {
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
     throw new Error(
-      "Falta DATABASE_URL. Cópiala desde tu proyecto de Supabase " +
-        "(usa la cadena con pool de conexiones, puerto 6543) " +
-        "a un archivo .env en la raíz del proyecto.",
+      "Falta DATABASE_URL. En el dashboard de Supabase pulsa «Connect» " +
+        "(arriba del todo), elige «Transaction pooler», copia la cadena y " +
+        "pégala en un archivo .env en la raíz del proyecto.",
     );
   }
-  // Supabase recomienda la URL con pool (Supavisor, ?pgbouncer=true)
-  // para entornos serverless como Vercel.
-  const adapter = new PrismaPg({ connectionString });
+  // Pool propio limitado a 1 conexión por instancia: recomendación oficial
+  // de Supabase para serverless (Vercel). Cada instancia comparte el cliente,
+  // y Supavisor multiplexa por debajo, así no se agota el pool.
+  // `?pgbouncer=true` en la URL es el parámetro que Supabase recomienda para
+  // el pooler en modo transacción. El adaptador no usa prepared statements
+  // con nombre por defecto, así que funciona en modo transacción sin más.
+  const adapter = new PrismaPg({ connectionString, max: 1 });
   return new PrismaClient({ adapter });
 }
 

@@ -26,10 +26,12 @@ dependencias son JavaScript puro o traen binarios precompilados.
 npm install
 
 # 2. Configurar la conexión a Supabase:
-#    copia .env.example a .env y pega las cadenas de conexión de tu proyecto
-#    (Supabase → Project Settings → Database → Connection string):
-#    - DATABASE_URL → la cadena con POOL (puerto 6543, con ?pgbouncer=true)
-#    - DIRECT_URL   → la cadena DIRECTA (puerto 5432)
+#    copia .env.example a .env y pega las cadenas de conexión de tu proyecto.
+#    En el dashboard de Supabase pulsa el botón "Connect" (arriba del todo):
+#    - Elige "Transaction pooler" -> pégala en DATABASE_URL (la usa la app)
+#    - Elige "Session pooler"      -> pégala en DIRECT_URL   (la usa Prisma
+#      para crear y modificar las tablas; la "Direct connection" es IPv6-only
+#      en el plan gratuito y no llega desde redes IPv4 ni desde Vercel)
 cp .env.example .env
 
 # 3. Crear las tablas en Supabase
@@ -51,9 +53,10 @@ Abre [http://localhost:3000](http://localhost:3000) en el navegador.
 1. Sube el repositorio a GitHub (ya está listo).
 2. En [Vercel](https://vercel.com) → **Add New… → Project** → importa
    `noxell-dashboard`.
-3. En **Environment Variables** añade las dos variables de tu `.env`:
-   - `DATABASE_URL` (cadena con pool, puerto 6543)
-   - `DIRECT_URL` (cadena directa, puerto 5432)
+3. En **Environment Variables** añade las dos variables de tu `.env`
+   (las copias del botón "Connect" del dashboard de Supabase):
+   - `DATABASE_URL` → "Transaction pooler" (puerto 6543)
+   - `DIRECT_URL` → "Session pooler" (puerto 5432)
 4. Despliega. El proyecto incluye el script `vercel-build`, que en cada
    despliegue ejecuta automáticamente:
    `prisma generate && prisma migrate deploy && next build`.
