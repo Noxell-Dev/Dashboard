@@ -17,12 +17,12 @@ export default function LoginPage() {
           <Image
             src="/logorojo.png"
             alt="Logo de Noxell Dev"
-            width={40}
-            height={40}
+            width={56}
+            height={56}
           />
           <div>
             <p className="font-bold tracking-tight text-zinc-50">
-              noxell<span className="text-indigo-400">.dev</span>
+              noxell<span className="text-red-400">.dev</span>
             </p>
             <p className="text-xs text-zinc-500">Panel del estudio</p>
           </div>

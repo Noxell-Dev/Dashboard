@@ -18,12 +18,12 @@ function Logo() {
       <Image
         src="/logorojo.png"
         alt="Logo de Noxell Dev"
-        width={32}
-        height={32}
+        width={44}
+        height={44}
       />
       <span>
         <span className="block text-xl font-bold tracking-tight text-zinc-50">
-          noxell<span className="text-indigo-400">.dev</span>
+          noxell<span className="text-red-400">.dev</span>
         </span>
         <span className="block text-xs text-zinc-500">Panel del estudio</span>
       </span>
@@ -47,7 +47,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
             onClick={onNavigate}
             className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition ${
               active
-                ? "bg-indigo-600/15 text-indigo-300 ring-1 ring-indigo-500/30"
+                ? "bg-red-600/15 text-red-300 ring-1 ring-red-500/30"
                 : "text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100"
             }`}
           >

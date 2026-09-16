@@ -157,7 +157,7 @@ export function ClientManager({ clients }: { clients: ClientWithProjects[] }) {
                   )}
                 </div>
                 <span
-                  className="shrink-0 rounded-full bg-indigo-500/15 px-2.5 py-0.5 text-xs font-medium text-indigo-300 ring-1 ring-indigo-500/30"
+                  className="shrink-0 rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-300 ring-1 ring-red-500/30"
                   title="Proyectos vinculados"
                 >
                   {client._count.projects}{" "}
@@ -169,7 +169,7 @@ export function ClientManager({ clients }: { clients: ClientWithProjects[] }) {
                   <p className="truncate">
                     <a
                       href={`mailto:${client.email}`}
-                      className="hover:text-indigo-300 hover:underline"
+                      className="hover:text-red-300 hover:underline"
                     >
                       {client.email}
                     </a>
@@ -179,7 +179,7 @@ export function ClientManager({ clients }: { clients: ClientWithProjects[] }) {
                   <p>
                     <a
                       href={`tel:${client.phone}`}
-                      className="hover:text-indigo-300 hover:underline"
+                      className="hover:text-red-300 hover:underline"
                     >
                       {client.phone}
                     </a>

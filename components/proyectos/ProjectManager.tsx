@@ -213,7 +213,7 @@ export function ProjectManager({
             onClick={() => setStatusFilter(s)}
             className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition ${
               statusFilter === s
-                ? "bg-indigo-600 text-white"
+                ? "bg-red-600 text-white"
                 : "bg-zinc-800/60 text-zinc-400 ring-1 ring-zinc-700 hover:text-zinc-100"
             }`}
           >
@@ -262,7 +262,7 @@ export function ProjectManager({
               </div>
               <h3 className="font-semibold text-zinc-50">{project.title}</h3>
               {project.client && (
-                <p className="mt-0.5 text-xs text-indigo-300">
+                <p className="mt-0.5 text-xs text-red-300">
                   {project.client.name}
                   {project.client.company
                     ? ` · ${project.client.company}`
@@ -284,7 +284,7 @@ export function ProjectManager({
                       href={project.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-indigo-300 underline-offset-2 hover:underline"
+                      className="text-red-300 underline-offset-2 hover:underline"
                     >
                       Ver proyecto ↗
                     </a>

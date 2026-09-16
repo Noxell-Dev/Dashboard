@@ -68,7 +68,7 @@ export function Modal({
 // ---------------------------------------------------------------------------
 
 export const inputClasses =
-  "w-full rounded-lg border border-zinc-700 bg-zinc-800/60 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30";
+  "w-full rounded-lg border border-zinc-700 bg-zinc-800/60 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition focus:border-red-500 focus:ring-2 focus:ring-red-500/30";
 
 export function Field({
   label,
@@ -117,7 +117,7 @@ export function SubmitButton({
     <button
       type="submit"
       disabled={pending}
-      className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-60"
+      className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {pending ? pendingText : children}
     </button>
@@ -247,7 +247,7 @@ export function PrimaryButton({
     <button
       type="button"
       onClick={onClick}
-      className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500"
+      className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-500"
     >
       {children}
     </button>

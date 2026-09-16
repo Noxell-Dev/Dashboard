@@ -56,7 +56,7 @@ export default async function Home() {
           action={
             <Link
               href="/proyectos"
-              className="text-sm font-medium text-indigo-300 hover:underline"
+              className="text-sm font-medium text-red-300 hover:underline"
             >
               Ver todos →
             </Link>
@@ -65,7 +65,7 @@ export default async function Home() {
           {recentProjects.length === 0 ? (
             <p className="text-sm text-zinc-500">
               Todavía no hay proyectos.{" "}
-              <Link href="/proyectos" className="text-indigo-300 hover:underline">
+              <Link href="/proyectos" className="text-red-300 hover:underline">
                 Crea el primero
               </Link>
               .
@@ -105,7 +105,7 @@ export default async function Home() {
           action={
             <Link
               href="/prompts"
-              className="text-sm font-medium text-indigo-300 hover:underline"
+              className="text-sm font-medium text-red-300 hover:underline"
             >
               Ver todos →
             </Link>
@@ -114,7 +114,7 @@ export default async function Home() {
           {recentPrompts.length === 0 ? (
             <p className="text-sm text-zinc-500">
               Todavía no hay prompts.{" "}
-              <Link href="/prompts" className="text-indigo-300 hover:underline">
+              <Link href="/prompts" className="text-red-300 hover:underline">
                 Guarda el primero
               </Link>
               .
@@ -136,7 +136,7 @@ export default async function Home() {
                   </div>
                   <Link
                     href="/prompts"
-                    className="shrink-0 text-xs font-medium text-indigo-300 hover:underline"
+                    className="shrink-0 text-xs font-medium text-red-300 hover:underline"
                   >
                     Abrir →
                   </Link>
