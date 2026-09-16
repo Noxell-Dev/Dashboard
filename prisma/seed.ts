@@ -5,11 +5,14 @@
  * (también configurado como `prisma.seed` para `npx prisma db seed`)
  */
 import { PrismaClient } from "../generated/prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaLibSql } from "@prisma/adapter-libsql";
 
-const adapter = new PrismaBetterSqlite3({
-  url: process.env.DATABASE_URL ?? "file:./dev.db",
-});
+const rawUrl = process.env.DATABASE_URL ?? "file:./dev.db";
+const url = rawUrl.startsWith("file:") && !rawUrl.slice(5).startsWith("/")
+  ? `file:${process.cwd()}/${rawUrl.slice(5)}`.replace(/\\/g, "/")
+  : rawUrl;
+
+const adapter = new PrismaLibSql({ url });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {

@@ -16,6 +16,9 @@ realizados y una biblioteca de prompts reutilizables.
 - Node.js 20 o superior
 - npm
 
+No se necesita Python ni herramientas de compilación: el driver de SQLite
+(`libsql`) trae binarios precompilados para Windows, macOS y Linux.
+
 ## Puesta en marcha
 
 ```bash
@@ -37,8 +40,9 @@ npm run dev
 
 Abre [http://localhost:3000](http://localhost:3000) en el navegador.
 
-> La base de datos es el archivo `dev.db` en la raíz del proyecto
-> (`DATABASE_URL="file:./dev.db"` en `.env`). No se sube al repositorio.
+> La base de datos es el archivo `dev.db` en la raíz del proyecto. Por
+> defecto se usa `DATABASE_URL="file:./dev.db"`; si quieres cambiarla,
+> copia `.env.example` a `.env` y edítalo. No se sube al repositorio.
 
 ## Scripts
 
