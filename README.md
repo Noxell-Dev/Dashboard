@@ -85,7 +85,9 @@ app/
   clientes/page.tsx   → Gestión de clientes (CRUD)
   proyectos/page.tsx  → Gestión de proyectos (CRUD)
   prompts/page.tsx    → Biblioteca de prompts (búsqueda, filtros, copiar)
-  icon.png            → Logo y favicon (del repo Website)
+  icon.png            → Favicon (nudo rojo de noxell.dev)
+  apple-icon.png      → Icono Apple 180×180
+  favicon.ico         → Favicon clásico
 proxy.ts              → Protege todas las rutas salvo /login
 components/
   AppShell.tsx        → Estructura con navegación (oculta en /login)
@@ -102,6 +104,8 @@ lib/
   utils.ts            → Utilidades (fechas, etiquetas, estados)
 prisma/
   schema.prisma       → Modelos: Client, Project, Prompt
+public/
+  logorojo.png        → Logo de Noxell Dev (como en noxell.dev)
 ```
 
 ## Modelo de datos

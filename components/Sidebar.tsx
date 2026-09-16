@@ -16,11 +16,10 @@ function Logo() {
   return (
     <Link href="/" className="flex items-center gap-2.5 px-2">
       <Image
-        src="/icon.png"
-        alt="Logo de noxell.dev"
+        src="/logorojo.png"
+        alt="Logo de Noxell Dev"
         width={32}
         height={32}
-        className="rounded-lg"
       />
       <span>
         <span className="block text-xl font-bold tracking-tight text-zinc-50">

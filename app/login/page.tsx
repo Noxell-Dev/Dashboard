@@ -15,11 +15,10 @@ export default function LoginPage() {
       <div className="w-full max-w-sm rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6">
         <div className="mb-6 flex items-center gap-3">
           <Image
-            src="/icon.png"
-            alt="Logo de noxell.dev"
+            src="/logorojo.png"
+            alt="Logo de Noxell Dev"
             width={40}
             height={40}
-            className="rounded-lg"
           />
           <div>
             <p className="font-bold tracking-tight text-zinc-50">
