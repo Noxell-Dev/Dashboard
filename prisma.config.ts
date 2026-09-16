@@ -7,11 +7,13 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    // Las migraciones usan el pooler en modo sesión (puerto 5432):
-    // es IPv4 en todos los planes (la conexión directa db.<ref> es
-    // IPv6-only en el plan gratuito) y admite DDL y prepared statements.
-    // Se consigue en el dashboard con el botón «Connect» → «Session pooler».
-    // Si no se define, se usa DATABASE_URL.
-    url: process.env.DIRECT_URL ?? process.env.DATABASE_URL,
+    // Una sola URL para todo (app, seed y Prisma CLI): el Transaction
+    // pooler de Supabase («Connect» → «Transaction pooler» en el dashboard).
+    // Las tablas se crean una vez desde el SQL Editor del dashboard con
+    // prisma/migrations/20260916195700_init/migration.sql; no se usa
+    // `migrate deploy` porque el motor de migraciones no funciona bien
+    // a través del pooler.
+    // Si falta, la app avisa con un error claro al primer uso (lib/prisma.ts).
+    url: process.env.DATABASE_URL,
   },
 });
