@@ -7,17 +7,17 @@ realizados y una biblioteca de prompts reutilizables.
 
 - **Next.js 16** (App Router) + **React 19** + **TypeScript**
 - **Tailwind CSS v4**
-- **Prisma ORM 7** con **SQLite** (base de datos en un archivo local, sin
-  configuración adicional)
+- **Prisma ORM 7** con **PostgreSQL** en **Supabase**
 - Mutaciones con **Server Actions** (sin rutas API separadas)
 
 ## Requisitos
 
 - Node.js 20 o superior
 - npm
+- Un proyecto en [Supabase](https://supabase.com) (capa gratuita vale)
 
-No se necesita Python ni herramientas de compilación: el driver de SQLite
-(`libsql`) trae binarios precompilados para Windows, macOS y Linux.
+No se necesita Python ni herramientas de compilación: todas las
+dependencias son JavaScript puro o traen binarios precompilados.
 
 ## Puesta en marcha
 
@@ -25,11 +25,15 @@ No se necesita Python ni herramientas de compilación: el driver de SQLite
 # 1. Instalar dependencias
 npm install
 
-# 2. Crear la base de datos y aplicar las migraciones
-npx prisma migrate dev
+# 2. Configurar la conexión a Supabase:
+#    copia .env.example a .env y pega las cadenas de conexión de tu proyecto
+#    (Supabase → Project Settings → Database → Connection string):
+#    - DATABASE_URL → la cadena con POOL (puerto 6543, con ?pgbouncer=true)
+#    - DIRECT_URL   → la cadena DIRECTA (puerto 5432)
+cp .env.example .env
 
-# 3. Generar el cliente de Prisma (si no se generó con la migración)
-npx prisma generate
+# 3. Crear las tablas en Supabase
+npm run db:migrate   # = prisma migrate deploy
 
 # 4. Cargar los datos de ejemplo (4 clientes, 6 proyectos, 8 prompts)
 npm run db:seed
@@ -40,9 +44,19 @@ npm run dev
 
 Abre [http://localhost:3000](http://localhost:3000) en el navegador.
 
-> La base de datos es el archivo `dev.db` en la raíz del proyecto. Por
-> defecto se usa `DATABASE_URL="file:./dev.db"`; si quieres cambiarla,
-> copia `.env.example` a `.env` y edítalo. No se sube al repositorio.
+> El archivo `.env` no se sube al repositorio.
+
+## Despliegue en Vercel
+
+1. Sube el repositorio a GitHub (ya está listo).
+2. En [Vercel](https://vercel.com) → **Add New… → Project** → importa
+   `noxell-dashboard`.
+3. En **Environment Variables** añade las dos variables de tu `.env`:
+   - `DATABASE_URL` (cadena con pool, puerto 6543)
+   - `DIRECT_URL` (cadena directa, puerto 5432)
+4. Despliega. El proyecto incluye el script `vercel-build`, que en cada
+   despliegue ejecuta automáticamente:
+   `prisma generate && prisma migrate deploy && next build`.
 
 ## Scripts
 

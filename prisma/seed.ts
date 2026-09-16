@@ -2,17 +2,20 @@
  * Datos de ejemplo para el panel de noxell.dev.
  *
  * Se ejecuta con:  npm run db:seed
- * (también configurado como `prisma.seed` para `npx prisma db seed`)
+ * Usa la base de datos indicada en DATABASE_URL (tu proyecto de Supabase).
  */
+import "dotenv/config";
 import { PrismaClient } from "../generated/prisma/client";
-import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-const rawUrl = process.env.DATABASE_URL ?? "file:./dev.db";
-const url = rawUrl.startsWith("file:") && !rawUrl.slice(5).startsWith("/")
-  ? `file:${process.cwd()}/${rawUrl.slice(5)}`.replace(/\\/g, "/")
-  : rawUrl;
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error(
+    "Falta DATABASE_URL en el archivo .env (cadena de conexión de Supabase).",
+  );
+}
 
-const adapter = new PrismaLibSql({ url });
+const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {

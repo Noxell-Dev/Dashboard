@@ -1,31 +1,32 @@
 import { PrismaClient } from "../generated/prisma/client";
-import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;
 };
 
-function resolveDatabaseUrl(): string {
-  const raw = process.env.DATABASE_URL ?? "file:./dev.db";
-  // libsql resuelve las rutas relativas desde el directorio de trabajo;
-  // usar ruta absoluta evita sorpresas en Windows.
-  if (raw.startsWith("file:")) {
-    const relative = raw.slice("file:".length);
-    const absolute = relative.startsWith("/")
-      ? relative
-      : `${process.cwd()}/${relative}`.replace(/\\/g, "/");
-    return `file:${absolute}`;
-  }
-  return raw;
-}
-
 function createPrismaClient(): PrismaClient {
-  const adapter = new PrismaLibSql({ url: resolveDatabaseUrl() });
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error(
+      "Falta DATABASE_URL. Cópiala desde tu proyecto de Supabase " +
+        "(usa la cadena con pool de conexiones, puerto 6543) " +
+        "a un archivo .env en la raíz del proyecto.",
+    );
+  }
+  // Supabase recomienda la URL con pool (Supavisor, ?pgbouncer=true)
+  // para entornos serverless como Vercel.
+  const adapter = new PrismaPg({ connectionString });
   return new PrismaClient({ adapter });
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+function getPrisma(): PrismaClient {
+  globalForPrisma.prisma ??= createPrismaClient();
+  return globalForPrisma.prisma;
 }
+
+// Proxy perezoso: la conexión solo se crea al primer uso, no al importar
+// el módulo. Así `next build` no falla si todavía no existe el .env.
+export const prisma = new Proxy({} as PrismaClient, {
+  get: (_target, prop) => Reflect.get(getPrisma(), prop),
+});
