@@ -1,6 +1,5 @@
 import type { ProjectStatus } from "../generated/prisma/client";
 
-/** Convierte un FormDataEntryValue en string recortado o null si está vacío. */
 export function optionalString(
   value: FormDataEntryValue | null,
 ): string | null {
@@ -9,7 +8,6 @@ export function optionalString(
   return s === "" ? null : s;
 }
 
-/** Convierte un valor de <input type="date"> en Date o null. */
 export function optionalDate(value: FormDataEntryValue | null): Date | null {
   const s = optionalString(value);
   if (!s) return null;
@@ -17,17 +15,18 @@ export function optionalDate(value: FormDataEntryValue | null): Date | null {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
-/** Normaliza etiquetas separadas por comas: "a, b,,c" -> "a, b, c". */
+// "a, b,,c" -> "a, b, c"
 export function normalizeTags(value: FormDataEntryValue | null): string {
-  if (value === null || value === undefined) return "";
-  return String(value)
+  const s = optionalString(value);
+  if (!s) return "";
+  return s
     .split(",")
     .map((t) => t.trim())
     .filter((t) => t.length > 0)
     .join(", ");
 }
 
-/** "a, b, c" -> ["a", "b", "c"] */
+// "a, b, c" -> ["a", "b", "c"]
 export function tagsToList(tags: string | null | undefined): string[] {
   if (!tags) return [];
   return tags
@@ -36,7 +35,7 @@ export function tagsToList(tags: string | null | undefined): string[] {
     .filter((t) => t.length > 0);
 }
 
-/** Formatea una fecha en español: 15 ene 2026 */
+// Fecha en español: 15 ene 2026
 export function formatDate(date: Date | string | null | undefined): string {
   if (!date) return "—";
   const d = typeof date === "string" ? new Date(date) : date;
@@ -47,7 +46,7 @@ export function formatDate(date: Date | string | null | undefined): string {
   }).format(d);
 }
 
-/** Formatea una fecha para <input type="date">: 2026-01-15 */
+// Fecha para <input type="date">: 2026-01-15
 export function toInputDate(date: Date | string | null | undefined): string {
   if (!date) return "";
   const d = typeof date === "string" ? new Date(date) : date;

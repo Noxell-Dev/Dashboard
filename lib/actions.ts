@@ -2,11 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "./prisma";
-import {
-  normalizeTags,
-  optionalDate,
-  optionalString,
-} from "./utils";
+import { normalizeTags, optionalDate, optionalString } from "./utils";
 import type { ProjectStatus } from "../generated/prisma/client";
 
 export type ActionResult = { ok: boolean; error?: string };
@@ -16,10 +12,6 @@ const REVALIDATE = ["/", "/clientes", "/proyectos", "/prompts"] as const;
 function revalidateAll() {
   for (const path of REVALIDATE) revalidatePath(path);
 }
-
-// ---------------------------------------------------------------------------
-// Clientes
-// ---------------------------------------------------------------------------
 
 export async function saveClient(
   _prev: ActionResult,
@@ -53,7 +45,6 @@ export async function saveClient(
 
 export async function deleteClient(id: number): Promise<ActionResult> {
   try {
-    // Los proyectos vinculados quedan sin cliente (onDelete: SetNull)
     await prisma.client.delete({ where: { id } });
     revalidateAll();
     return { ok: true };
@@ -61,10 +52,6 @@ export async function deleteClient(id: number): Promise<ActionResult> {
     return { ok: false, error: "No se pudo eliminar el cliente." };
   }
 }
-
-// ---------------------------------------------------------------------------
-// Proyectos
-// ---------------------------------------------------------------------------
 
 const VALID_STATUSES: ProjectStatus[] = ["EN_CURSO", "COMPLETADO", "PAUSADO"];
 
@@ -118,10 +105,6 @@ export async function deleteProject(id: number): Promise<ActionResult> {
     return { ok: false, error: "No se pudo eliminar el proyecto." };
   }
 }
-
-// ---------------------------------------------------------------------------
-// Prompts
-// ---------------------------------------------------------------------------
 
 export async function savePrompt(
   _prev: ActionResult,

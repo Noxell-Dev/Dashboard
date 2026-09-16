@@ -14,12 +14,9 @@ function createPrismaClient(): PrismaClient {
         "pégala en un archivo .env en la raíz del proyecto.",
     );
   }
-  // Pool propio limitado a 1 conexión por instancia: recomendación oficial
-  // de Supabase para serverless (Vercel). Cada instancia comparte el cliente,
-  // y Supavisor multiplexa por debajo, así no se agota el pool.
-  // `?pgbouncer=true` en la URL es el parámetro que Supabase recomienda para
-  // el pooler en modo transacción. El adaptador no usa prepared statements
-  // con nombre por defecto, así que funciona en modo transacción sin más.
+  // Una conexión por instancia (recomendación de Supabase para serverless):
+  // Supavisor multiplexa por debajo. Sin prepared statements con nombre,
+  // funciona en el pooler en modo transacción.
   const adapter = new PrismaPg({ connectionString, max: 1 });
   return new PrismaClient({ adapter });
 }
@@ -29,8 +26,8 @@ function getPrisma(): PrismaClient {
   return globalForPrisma.prisma;
 }
 
-// Proxy perezoso: la conexión solo se crea al primer uso, no al importar
-// el módulo. Así `next build` no falla si todavía no existe el .env.
+// Proxy perezoso: la conexión se crea al primer uso, no al importar.
+// Así `next build` no falla si aún no hay DATABASE_URL.
 export const prisma = new Proxy({} as PrismaClient, {
   get: (_target, prop) => Reflect.get(getPrisma(), prop),
 });

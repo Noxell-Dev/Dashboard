@@ -139,56 +139,78 @@ export function ClientManager({ clients }: { clients: ClientWithProjects[] }) {
           description="Crea tu primer cliente para empezar a organizar el trabajo del estudio."
         />
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-zinc-800">
-          <table className="w-full min-w-[640px] text-left text-sm">
-            <thead>
-              <tr className="border-b border-zinc-800 bg-zinc-900/60 text-xs uppercase tracking-wide text-zinc-500">
-                <th className="px-4 py-3 font-medium">Cliente</th>
-                <th className="px-4 py-3 font-medium">Email</th>
-                <th className="px-4 py-3 font-medium">Teléfono</th>
-                <th className="px-4 py-3 font-medium">Proyectos</th>
-                <th className="px-4 py-3 text-right font-medium">Acciones</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-800/70">
-              {clients.map((client) => (
-                <tr key={client.id} className="transition hover:bg-zinc-900/40">
-                  <td className="px-4 py-3">
-                    <p className="font-medium text-zinc-100">{client.name}</p>
-                    {client.company && (
-                      <p className="text-xs text-zinc-500">{client.company}</p>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-zinc-400">
-                    {client.email ?? "—"}
-                  </td>
-                  <td className="px-4 py-3 text-zinc-400">
-                    {client.phone ?? "—"}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="rounded-full bg-indigo-500/15 px-2.5 py-0.5 text-xs font-medium text-indigo-300 ring-1 ring-indigo-500/30">
-                      {client._count.projects}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <IconButton
-                      onClick={() => openEdit(client)}
-                      label={`Editar ${client.name}`}
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {clients.map((client) => (
+            <article
+              key={client.id}
+              className="flex flex-col rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+            >
+              <div className="mb-2 flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <h3 className="truncate font-semibold text-zinc-50">
+                    {client.name}
+                  </h3>
+                  {client.company && (
+                    <p className="mt-0.5 text-xs text-zinc-500">
+                      {client.company}
+                    </p>
+                  )}
+                </div>
+                <span
+                  className="shrink-0 rounded-full bg-indigo-500/15 px-2.5 py-0.5 text-xs font-medium text-indigo-300 ring-1 ring-indigo-500/30"
+                  title="Proyectos vinculados"
+                >
+                  {client._count.projects}{" "}
+                  {client._count.projects === 1 ? "proyecto" : "proyectos"}
+                </span>
+              </div>
+              <div className="flex-1 space-y-1 text-sm text-zinc-400">
+                {client.email && (
+                  <p className="truncate">
+                    <a
+                      href={`mailto:${client.email}`}
+                      className="hover:text-indigo-300 hover:underline"
                     >
-                      Editar
-                    </IconButton>
-                    <IconButton
-                      onClick={() => setConfirmDelete(client)}
-                      label={`Eliminar ${client.name}`}
-                      danger
+                      {client.email}
+                    </a>
+                  </p>
+                )}
+                {client.phone && (
+                  <p>
+                    <a
+                      href={`tel:${client.phone}`}
+                      className="hover:text-indigo-300 hover:underline"
                     >
-                      Eliminar
-                    </IconButton>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      {client.phone}
+                    </a>
+                  </p>
+                )}
+                {client.notes && (
+                  <p className="line-clamp-2 pt-1 text-xs text-zinc-500">
+                    {client.notes}
+                  </p>
+                )}
+                {!client.email && !client.phone && !client.notes && (
+                  <p className="text-xs text-zinc-600">Sin datos de contacto</p>
+                )}
+              </div>
+              <div className="mt-4 flex justify-end border-t border-zinc-800/70 pt-3">
+                <IconButton
+                  onClick={() => openEdit(client)}
+                  label={`Editar ${client.name}`}
+                >
+                  Editar
+                </IconButton>
+                <IconButton
+                  onClick={() => setConfirmDelete(client)}
+                  label={`Eliminar ${client.name}`}
+                  danger
+                >
+                  Eliminar
+                </IconButton>
+              </div>
+            </article>
+          ))}
         </div>
       )}
 

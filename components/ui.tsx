@@ -107,9 +107,11 @@ export function FormError({ error }: { error?: string }) {
 export function SubmitButton({
   pending,
   children,
+  pendingText = "Guardando…",
 }: {
   pending: boolean;
   children: ReactNode;
+  pendingText?: string;
 }) {
   return (
     <button
@@ -117,7 +119,7 @@ export function SubmitButton({
       disabled={pending}
       className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-60"
     >
-      {pending ? "Guardando…" : children}
+      {pending ? pendingText : children}
     </button>
   );
 }
@@ -277,5 +279,15 @@ export function IconButton({
     >
       {children}
     </button>
+  );
+}
+
+// Esqueleto de carga para los loading.tsx
+export function Skeleton({ className = "" }: { className?: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={`animate-pulse rounded-xl bg-zinc-800/70 ${className}`}
+    />
   );
 }
