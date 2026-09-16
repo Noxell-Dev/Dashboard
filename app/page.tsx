@@ -6,22 +6,35 @@ import { SectionCard, StatCard, TagList } from "@/components/ui";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [clientCount, projectCount, promptCount, recentProjects, recentPrompts] =
-    await Promise.all([
-      prisma.client.count(),
-      prisma.project.count(),
-      prisma.prompt.count(),
-      prisma.project.findMany({
-        take: 5,
-        orderBy: { updatedAt: "desc" },
-        include: { client: true },
-      }),
-      prisma.prompt.findMany({
-        take: 5,
-        orderBy: { updatedAt: "desc" },
-        select: { id: true, title: true, category: true, updatedAt: true },
-      }),
-    ]);
+  const [
+    clientCount,
+    projectCount,
+    promptCount,
+    skillCount,
+    recentProjects,
+    recentPrompts,
+    recentSkills,
+  ] = await Promise.all([
+    prisma.client.count(),
+    prisma.project.count(),
+    prisma.prompt.count(),
+    prisma.aiSkill.count(),
+    prisma.project.findMany({
+      take: 5,
+      orderBy: { updatedAt: "desc" },
+      include: { client: true },
+    }),
+    prisma.prompt.findMany({
+      take: 5,
+      orderBy: { updatedAt: "desc" },
+      select: { id: true, title: true, category: true, updatedAt: true },
+    }),
+    prisma.aiSkill.findMany({
+      take: 5,
+      orderBy: { updatedAt: "desc" },
+      select: { id: true, name: true, category: true, updatedAt: true },
+    }),
+  ]);
 
   return (
     <div>
@@ -32,7 +45,7 @@ export default async function Home() {
         </p>
       </div>
 
-      <div className="mb-6 grid gap-4 sm:grid-cols-3">
+      <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Clientes"
           value={clientCount}
@@ -48,9 +61,14 @@ export default async function Home() {
           value={promptCount}
           subtitle="En la biblioteca"
         />
+        <StatCard
+          title="Skills IA"
+          value={skillCount}
+          subtitle="En el catálogo"
+        />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <SectionCard
           title="Proyectos recientes"
           action={
@@ -136,6 +154,51 @@ export default async function Home() {
                   </div>
                   <Link
                     href="/prompts"
+                    className="shrink-0 text-xs font-medium text-red-300 hover:underline"
+                  >
+                    Abrir →
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </SectionCard>
+        <SectionCard
+          title="Skills recientes"
+          action={
+            <Link
+              href="/skills"
+              className="text-sm font-medium text-red-300 hover:underline"
+            >
+              Ver todas →
+            </Link>
+          }
+        >
+          {recentSkills.length === 0 ? (
+            <p className="text-sm text-zinc-500">
+              Todavía no hay skills.{" "}
+              <Link href="/skills" className="text-red-300 hover:underline">
+                Guarda la primera
+              </Link>
+              .
+            </p>
+          ) : (
+            <ul className="space-y-3">
+              {recentSkills.map((s) => (
+                <li
+                  key={s.id}
+                  className="flex items-center justify-between gap-3 rounded-xl border border-zinc-800/70 bg-zinc-950/40 p-3"
+                >
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-zinc-100">
+                      {s.name}
+                    </p>
+                    <p className="mt-0.5 text-xs text-zinc-500">
+                      {s.category} · Actualizada el {formatDate(s.updatedAt)}
+                    </p>
+                  </div>
+                  <Link
+                    href="/skills"
                     className="shrink-0 text-xs font-medium text-red-300 hover:underline"
                   >
                     Abrir →

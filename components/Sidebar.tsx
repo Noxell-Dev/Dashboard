@@ -10,6 +10,7 @@ const LINKS = [
   { href: "/clientes", label: "Clientes", icon: "◉" },
   { href: "/proyectos", label: "Proyectos", icon: "▣" },
   { href: "/prompts", label: "Prompts", icon: "✎" },
+  { href: "/skills", label: "Skills IA", icon: "⚡" },
 ];
 
 function Logo() {

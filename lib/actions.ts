@@ -7,7 +7,7 @@ import type { ProjectStatus } from "../generated/prisma/client";
 
 export type ActionResult = { ok: boolean; error?: string };
 
-const REVALIDATE = ["/", "/clientes", "/proyectos", "/prompts"] as const;
+const REVALIDATE = ["/", "/clientes", "/proyectos", "/prompts", "/skills"] as const;
 
 function revalidateAll() {
   for (const path of REVALIDATE) revalidatePath(path);
@@ -145,5 +145,46 @@ export async function deletePrompt(id: number): Promise<ActionResult> {
     return { ok: true };
   } catch {
     return { ok: false, error: "No se pudo eliminar el prompt." };
+  }
+}
+
+export async function saveSkill(
+  _prev: ActionResult,
+  formData: FormData,
+): Promise<ActionResult> {
+  const id = optionalString(formData.get("id"));
+  const data = {
+    name: optionalString(formData.get("name")) ?? "",
+    description: optionalString(formData.get("description")),
+    category: optionalString(formData.get("category")) ?? "General",
+    tags: normalizeTags(formData.get("tags")),
+    url: optionalString(formData.get("url")),
+    content: optionalString(formData.get("content")),
+  };
+
+  if (!data.name) {
+    return { ok: false, error: "El nombre de la skill es obligatorio." };
+  }
+
+  try {
+    if (id) {
+      await prisma.aiSkill.update({ where: { id: Number(id) }, data });
+    } else {
+      await prisma.aiSkill.create({ data });
+    }
+    revalidateAll();
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "No se pudo guardar la skill." };
+  }
+}
+
+export async function deleteSkill(id: number): Promise<ActionResult> {
+  try {
+    await prisma.aiSkill.delete({ where: { id } });
+    revalidateAll();
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "No se pudo eliminar la skill." };
   }
 }

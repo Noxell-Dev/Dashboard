@@ -33,8 +33,10 @@ npm install
 cp .env.example .env
 
 # 3. Crear las tablas (UNA SOLA VEZ): en el SQL Editor del dashboard de
-#    Supabase pega el contenido de
-#    prisma/migrations/20260916195700_init/migration.sql y ejecútalo.
+#    Supabase pega y ejecuta, en orden, el contenido de:
+#    - prisma/migrations/20260916195700_init/migration.sql
+#    - prisma/migrations/20260916223000_add_ai_skill/migration.sql
+#    (si ya ejecutaste la primera, basta con la segunda).
 
 # 4. Arrancar el servidor de desarrollo
 npm run dev
@@ -85,6 +87,7 @@ app/
   clientes/page.tsx   → Gestión de clientes (CRUD)
   proyectos/page.tsx  → Gestión de proyectos (CRUD)
   prompts/page.tsx    → Biblioteca de prompts (búsqueda, filtros, copiar)
+  skills/page.tsx     → Catálogo de skills de IA (búsqueda, filtros, copiar)
   icon.png            → Favicon (nudo rojo de noxell.dev)
   apple-icon.png      → Icono Apple 180×180
   favicon.ico         → Favicon clásico
@@ -96,6 +99,7 @@ components/
   clientes/           → Tarjetas y formularios de clientes
   proyectos/          → Tarjetas y formularios de proyectos
   prompts/            → Biblioteca con búsqueda y filtros
+  skills/             → Catálogo de skills con búsqueda y filtros
 lib/
   prisma.ts           → Cliente de Prisma (singleton)
   actions.ts          → Server Actions (crear/editar/eliminar)
@@ -115,3 +119,4 @@ public/
   (`En curso` / `Completado` / `Pausado`), fechas de inicio y fin, URL y
   etiquetas.
 - **Prompt**: título, contenido, categoría y etiquetas.
+- **AiSkill**: nombre, descripción, categoría, etiquetas, URL y contenido.
