@@ -19,7 +19,7 @@ TypeScript, Tailwind CSS v4, Prisma 7 + PostgreSQL (Supabase).
   rutas API salvo que sea imprescindible.
 - Las páginas son Server Components con `export const dynamic =
   "force-dynamic"`; la interactividad vive en `components/*/`.
-- Cada sección (clientes, proyectos, prompts, skills) tiene su página en
+- Cada sección (clientes, proyectos, prompts, skills, mensajes) tiene su página en
   `app/<seccion>/`, su `loading.tsx` con esqueletos y su manager en
   `components/<seccion>/` con este patrón: `PageHeader`, búsqueda, filtros,
   tarjetas en grid, modal de crear/editar, modal de confirmar borrado.

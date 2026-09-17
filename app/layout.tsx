@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AppShell } from "@/components/AppShell";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +26,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         className={`${geistSans.variable} ${geistMono.variable} min-h-full bg-zinc-950 font-sans text-zinc-100 antialiased`}
       >
         <AppShell>{children}</AppShell>
-        <SpeedInsights />
       </body>
     </html>
   );

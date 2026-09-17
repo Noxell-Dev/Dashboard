@@ -7,7 +7,7 @@ import type { ProjectStatus } from "../generated/prisma/client";
 
 export type ActionResult = { ok: boolean; error?: string };
 
-const REVALIDATE = ["/", "/clientes", "/proyectos", "/prompts", "/skills"] as const;
+const REVALIDATE = ["/", "/clientes", "/proyectos", "/prompts", "/skills", "/mensajes"] as const;
 
 function revalidateAll() {
   for (const path of REVALIDATE) revalidatePath(path);
@@ -159,7 +159,7 @@ export async function saveSkill(
     category: optionalString(formData.get("category")) ?? "General",
     tags: normalizeTags(formData.get("tags")),
     url: optionalString(formData.get("url")),
-    content: optionalString(formData.get("content")),
+    installCommand: optionalString(formData.get("installCommand")),
   };
 
   if (!data.name) {
@@ -186,5 +186,47 @@ export async function deleteSkill(id: number): Promise<ActionResult> {
     return { ok: true };
   } catch {
     return { ok: false, error: "No se pudo eliminar la skill." };
+  }
+}
+
+export async function savePresetMessage(
+  _prev: ActionResult,
+  formData: FormData,
+): Promise<ActionResult> {
+  const id = optionalString(formData.get("id"));
+  const data = {
+    title: optionalString(formData.get("title")) ?? "",
+    content: optionalString(formData.get("content")) ?? "",
+    category: optionalString(formData.get("category")) ?? "General",
+    tags: normalizeTags(formData.get("tags")),
+  };
+
+  if (!data.title) {
+    return { ok: false, error: "El título del mensaje es obligatorio." };
+  }
+  if (!data.content) {
+    return { ok: false, error: "El contenido del mensaje es obligatorio." };
+  }
+
+  try {
+    if (id) {
+      await prisma.presetMessage.update({ where: { id: Number(id) }, data });
+    } else {
+      await prisma.presetMessage.create({ data });
+    }
+    revalidateAll();
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "No se pudo guardar el mensaje." };
+  }
+}
+
+export async function deletePresetMessage(id: number): Promise<ActionResult> {
+  try {
+    await prisma.presetMessage.delete({ where: { id } });
+    revalidateAll();
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "No se pudo eliminar el mensaje." };
   }
 }

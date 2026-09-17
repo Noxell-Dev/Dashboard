@@ -88,7 +88,8 @@ app/
   clientes/page.tsx   → Gestión de clientes (CRUD)
   proyectos/page.tsx  → Gestión de proyectos (CRUD)
   prompts/page.tsx    → Biblioteca de prompts (búsqueda, filtros, copiar)
-  skills/page.tsx     → Catálogo de skills de IA (búsqueda, filtros, copiar)
+  skills/page.tsx     → Catálogo de skills de IA (comando de instalación, instalación por categoría, copiar)
+  mensajes/page.tsx   → Mensajes predeterminados (búsqueda, filtros, copiar)
   icon.svg            → Favicon vectorial (nudo rojo de noxell.dev)
   icon.png            → Favicon (nudo rojo de noxell.dev)
   apple-icon.png      → Icono Apple 180×180
@@ -101,7 +102,8 @@ components/
   clientes/           → Tarjetas y formularios de clientes
   proyectos/          → Tarjetas y formularios de proyectos
   prompts/            → Biblioteca con búsqueda y filtros
-  skills/             → Catálogo de skills con búsqueda y filtros
+  skills/             → Catálogo de skills con comando de instalación
+  mensajes/           → Mensajes predeterminados con búsqueda y filtros
 lib/
   prisma.ts           → Cliente de Prisma (singleton)
   actions.ts          → Server Actions (crear/editar/eliminar)
@@ -109,7 +111,7 @@ lib/
   auth-actions.ts     → Acciones de login/logout
   utils.ts            → Utilidades (fechas, etiquetas, estados)
 prisma/
-  schema.prisma       → Modelos: Client, Project, Prompt, AiSkill
+  schema.prisma       → Modelos: Client, Project, Prompt, AiSkill, PresetMessage
   full-setup.sql      → SQL completo para crear toda la base de datos de una vez
 public/
   logorojo.png        → Logo de Noxell Dev (como en noxell.dev)

@@ -108,13 +108,16 @@ function SkillForm({
           className={inputClasses}
         />
       </Field>
-      <Field label="Contenido" htmlFor="content" hint="Instrucciones o notas de uso">
-        <textarea
-          id="content"
-          name="content"
-          rows={6}
-          defaultValue={skill?.content ?? ""}
-          placeholder="Detalles de la skill…"
+      <Field
+        label="Comando de instalación"
+        htmlFor="installCommand"
+        hint="Se copia con un clic desde la tarjeta"
+      >
+        <input
+          id="installCommand"
+          name="installCommand"
+          defaultValue={skill?.installCommand ?? ""}
+          placeholder="npx skills add https://github.com/anthropics/skills --skill frontend-design"
           className={`${inputClasses} font-mono`}
         />
       </Field>
@@ -140,9 +143,9 @@ function SkillCard({
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
-    if (!skill.content) return;
+    if (!skill.installCommand) return;
     try {
-      await navigator.clipboard.writeText(skill.content);
+      await navigator.clipboard.writeText(skill.installCommand);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -183,14 +186,14 @@ function SkillCard({
           </a>
         </p>
       )}
-      {skill.content && (
-        <pre className="mt-3 max-h-32 flex-1 overflow-y-auto whitespace-pre-wrap rounded-xl bg-zinc-950/80 p-3 font-mono text-xs leading-relaxed text-zinc-300 ring-1 ring-zinc-800">
-          {skill.content}
+      {skill.installCommand && (
+        <pre className="mt-3 max-h-32 flex-1 overflow-y-auto whitespace-pre-wrap break-all rounded-xl bg-zinc-950/80 p-3 font-mono text-xs leading-relaxed text-zinc-300 ring-1 ring-zinc-800">
+          {skill.installCommand}
         </pre>
       )}
       <div className="mt-3 flex items-center justify-between gap-2">
         <TagList tags={skill.tags} />
-        {skill.content && (
+        {skill.installCommand && (
           <button
             type="button"
             onClick={copy}
@@ -200,11 +203,54 @@ function SkillCard({
                 : "bg-zinc-800 text-zinc-200 ring-1 ring-zinc-700 hover:bg-zinc-700"
             }`}
           >
-            {copied ? "¡Copiado!" : "Copiar"}
+            {copied ? "¡Copiado!" : "Copiar comando"}
           </button>
         )}
       </div>
     </article>
+  );
+}
+
+function InstallAllButton({
+  skills,
+  scope,
+}: {
+  skills: AiSkill[];
+  scope: string;
+}) {
+  const [copied, setCopied] = useState(false);
+
+  const withCommand = skills.filter((s) => s.installCommand?.trim());
+  if (withCommand.length === 0) return null;
+
+  const copyAll = async () => {
+    const combined = withCommand
+      .map((s) => s.installCommand!.trim())
+      .join(" && ");
+    try {
+      await navigator.clipboard.writeText(combined);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // El portapapeles no está disponible; no hacemos nada.
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={copyAll}
+      title="Genera un único comando que instala todas estas skills"
+      className={`shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium ring-1 transition sm:self-center ${
+        copied
+          ? "bg-emerald-600 text-white ring-emerald-500"
+          : "bg-red-600/15 text-red-300 ring-red-500/30 hover:bg-red-600/25"
+      }`}
+    >
+      {copied
+        ? "¡Comando copiado!"
+        : `⧉ Instalar ${scope} (${withCommand.length})`}
+    </button>
   );
 }
 
@@ -227,7 +273,7 @@ export function SkillManager({ skills }: { skills: AiSkill[] }) {
       const matchesCategory = category === ALL_CATEGORIES || s.category === category;
       if (!matchesCategory) return false;
       if (!q) return true;
-      const haystack = `${s.name} ${s.description ?? ""} ${s.content ?? ""} ${s.tags}`.toLowerCase();
+      const haystack = `${s.name} ${s.description ?? ""} ${s.installCommand ?? ""} ${s.tags}`.toLowerCase();
       return haystack.includes(q);
     });
   }, [skills, query, category]);
@@ -278,6 +324,10 @@ export function SkillManager({ skills }: { skills: AiSkill[] }) {
             </option>
           ))}
         </select>
+        <InstallAllButton
+          skills={filtered}
+          scope={category === ALL_CATEGORIES ? "todas" : `«${category}»`}
+        />
       </div>
 
       {filtered.length === 0 ? (

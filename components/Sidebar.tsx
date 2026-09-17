@@ -12,6 +12,7 @@ const LINKS = [
   { href: "/proyectos", label: "Proyectos", icon: "▣" },
   { href: "/prompts", label: "Prompts", icon: "✎" },
   { href: "/skills", label: "Skills IA", icon: "⬢" },
+  { href: "/mensajes", label: "Mensajes", icon: "✉" },
 ];
 
 function Logo() {
