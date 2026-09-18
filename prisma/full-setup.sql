@@ -61,7 +61,7 @@ CREATE TABLE "AiSkill" (
     "category" TEXT NOT NULL DEFAULT 'General',
     "tags" TEXT NOT NULL DEFAULT '',
     "url" TEXT,
-    "install_command" TEXT,
+    "installCommand" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
